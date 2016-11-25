@@ -6,18 +6,11 @@
 		<img src='<c:url value="/images/intro.jpg"/>' alt='logo' id='logo'>
 	</div>
 	<ul>
-		<li><a href="<c:url value='/artikels/zoekenopnummer.htm'/>">Artikel
-				zoeken op nummer</a></li>
-		<li><a href="<c:url value='/artikels/toevoegen.htm'/>">Artikel
-				toevoegen </a></li>
-		<li><a href="<c:url value='/artikels/zoekenopnaam.htm'/>">Artikels
-				zoeken op naam</a></li>
-		<li><a href="<c:url value='/artikels/prijsverhoging.htm'/>">Prijsverhoging
-		</a></li>
-		<li><a href="<c:url value='/artikels/kortingen.htm'/>">Artikelkortingen
-		</a></li>
-		<li><a href="<c:url value='/artikels/perartikelgroep.htm'/>">Artikels
-				per artikelgroep</a></li>
-		<li><a href="<c:url value='/artikels.htm'/>">Artikellijst</a></li>
+		<c:forEach var='land' items='${landen}' varStatus='status'>
+			<li><c:url value='/soorten.htm' var='index'>
+					<c:param name='id' value="${land.id}" />
+				</c:url> <a href="<c:out value='${index}'/>"><img
+					src="images/${land.id}.png" alt="${land.naam}"></a></li>
+		</c:forEach>
 	</ul>
 </nav>

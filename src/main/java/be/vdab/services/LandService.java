@@ -11,4 +11,8 @@ public class LandService extends AbstractService {
 	public List<Land> findAll() {
 		return landRepository.findAll();
 	}
+
+	public Land read(long id) {
+		return landRepository.read(id);
+	}
 }

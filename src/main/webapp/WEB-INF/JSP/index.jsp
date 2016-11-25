@@ -3,7 +3,7 @@
 <%@taglib prefix="v" uri='http://vdab.be/tags'%>
 <!doctype html>
 <html lang='nl'>
-<v:head title='Wereldwijnen' />
+	<v:head title='Wereldwijnen' />
 <body>
 	<header>
 		<v:menu />

@@ -8,4 +8,8 @@ public class LandRepository extends AbstractRepository {
 	public List<Land> findAll() {
 		return getEntityManager().createNamedQuery("Land.findAll", Land.class).getResultList();
 	}
+
+	public Land read(long id) {
+		return getEntityManager().find(Land.class, id);
+	}
 }

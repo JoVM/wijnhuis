@@ -14,7 +14,7 @@
 	<h2>Soorten uit ${land.naam}</h2>
 	<c:if test='${not empty land}'>
 		<c:forEach items='${land.soorten}' var='soort'>
-					<a href="">${soort.naam}</a>
+					${soort.naam}
 		</c:forEach>
 	</c:if>
 </body>

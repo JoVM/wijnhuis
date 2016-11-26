@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 /**
@@ -25,6 +26,7 @@ public class Land implements Serializable {
 	private int versie;
 
 	@OneToMany(mappedBy = "land")
+	@OrderBy("naam")
 	private Set<Soort> soorten;
 
 	public Land(String naam, int versie) {

@@ -25,6 +25,7 @@ public class IndexServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setAttribute("image_path", "images");
 		request.setAttribute("landen", landService.findAll());
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}

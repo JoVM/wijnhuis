@@ -26,6 +26,8 @@ public class PerLand extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setAttribute("image_path", "../images");
+		request.setAttribute("landen", landService.findAll());
 		String id = request.getParameter("id");
 		if (id != null) {
 			Land land = landService.read(Long.parseLong(id));

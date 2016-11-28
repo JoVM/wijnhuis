@@ -5,7 +5,7 @@
 <!doctype html>
 <html lang='nl'>
 <head>
-	<v:head title='Soorten per land' />
+<v:head title='Soorten per land' />
 </head>
 <body>
 	<header>
@@ -13,8 +13,11 @@
 	</header>
 	<h2>Soorten uit ${land.naam}</h2>
 	<c:if test='${not empty land}'>
-		<c:forEach items='${land.soorten}' var='soort'>
-					<a href="">${soort.naam}</a>
+		<c:forEach var='soort' items='${land.soorten}' varStatus='status'>
+			<li><c:url value='/landen/persoort.htm'
+					var='index'>
+					<c:param name='idsoort' value="${soort.id}" />
+				</c:url> <a href="<c:out value='${index}'/>">${soort.naam}</a></li>
 		</c:forEach>
 	</c:if>
 </body>

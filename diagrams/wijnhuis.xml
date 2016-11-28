@@ -3,8 +3,8 @@
 		<entity-name>be.vdab.entities.Land</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>166</entity-height>
-		<entity-X-Coordinate>100</entity-X-Coordinate>
-		<entity-Y-Coordinate>130</entity-Y-Coordinate>
+		<entity-X-Coordinate>70</entity-X-Coordinate>
+		<entity-Y-Coordinate>55</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -13,9 +13,20 @@
 	<entity>
 		<entity-name>be.vdab.entities.Soort</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>166</entity-height>
-		<entity-X-Coordinate>370</entity-X-Coordinate>
-		<entity-Y-Coordinate>220</entity-Y-Coordinate>
+		<entity-height>186</entity-height>
+		<entity-X-Coordinate>345</entity-X-Coordinate>
+		<entity-Y-Coordinate>128</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>be.vdab.entities.Wijn</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>226</entity-height>
+		<entity-X-Coordinate>78</entity-X-Coordinate>
+		<entity-Y-Coordinate>279</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>

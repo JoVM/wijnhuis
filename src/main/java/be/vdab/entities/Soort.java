@@ -1,6 +1,7 @@
 package be.vdab.entities;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
@@ -20,6 +22,8 @@ import javax.persistence.Table;
 @Table(name = "soorten")
 public class Soort implements Serializable {
 	private static final long serialVersionUID = 1L;
+	public static final String MET_WIJN = "Soort.metWijn";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -28,8 +32,11 @@ public class Soort implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "landid")
-	@OrderBy("naam")
 	private Land land;
+
+	@OneToMany(mappedBy = "soort")
+	@OrderBy("jaar")
+	private Set<Wijn> wijnen;
 
 	public Soort(String naam, int versie) {
 		this.naam = naam;
@@ -47,6 +54,24 @@ public class Soort implements Serializable {
 		if (land != null && !land.getSoorten().contains(this)) {
 			land.add(this);
 		}
+	}
+
+	public void add(Wijn wijn) {
+		wijnen.add(wijn);
+		if (wijn.getSoort() != this) {
+			wijn.setSoort(this);
+		}
+	}
+
+	public void remove(Wijn wijn) {
+		wijnen.remove(wijn);
+		if (wijn.getSoort() == this) {
+			wijn.setSoort(null);
+		}
+	}
+
+	public Set<Wijn> getWijnen() {
+		return wijnen;
 	}
 
 	public Land getLand() {

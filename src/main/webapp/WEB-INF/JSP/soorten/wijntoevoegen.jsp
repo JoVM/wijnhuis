@@ -14,14 +14,32 @@
 	<h2>Wijn toevoegen aan mandje</h2>
 	<form method='post' id='toevoegform'>
 	<table>
-<%-- 		<tr><th>Land</th><td>${wijn.soort.land}</td></tr> --%>
-<%-- 		<tr><th>Soort</th><td>${wijn.soort}</td></tr> --%>
-<%-- 		<tr><th>Jaar</th><td>${wijn.jaar}</td></tr> --%>
-<%-- 		<tr><th>Beoordeling</th><td>${wijn.beoordeling}</td></tr> --%>
-<%-- 		<tr><th>Prijs</th><td>${wijn.prijs}</td></tr> --%>
-	</table>
-		<label>Aantal flessen<span>${fouten.naam}</span> <input
-			name='naam' value='' autofocus required></label> 
+			<tr>
+				<th>Land</th>
+				<td>${wijn.soort.land.naam}</td>
+			</tr>
+			<tr>
+				<th>Soort</th>
+				<td>${wijn.soort.naam}</td>
+			</tr>
+			<tr>
+				<th>Jaar</th>
+				<td>${wijn.jaar}</td>
+			</tr>
+			<tr>
+				<th>Beoordeling</th>
+				<td><c:forEach
+					begin='1' end='${wijn.beoordeling}'>
+					&#9733;
+				</c:forEach></td>
+			</tr>
+			<tr>
+				<th>Prijs</th>
+				<td>${wijn.prijs}</td>
+			</tr>
+		</table><br>
+		<label>Aantal flessen<span>${fouten.aantal}</span> <input
+			name='aantal' value='${param.aantal}' autofocus required></label> 
 			<input type='submit' value='Toevoegen' id='toevoegknop'>
 	</form>
 </body>

@@ -2,7 +2,10 @@ package be.vdab.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import be.vdab.valueobjects.BestelbonLijn;
+
 /**
  * The persistent class for the wijnen database table.
  * 
@@ -20,10 +25,10 @@ import javax.persistence.Table;
 @Table(name = "wijnen")
 public class Wijn implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	private byte beoordeling;
 	private int inBestelling;
 	private int jaar;
@@ -33,6 +38,10 @@ public class Wijn implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "soortid")
 	private Soort soort;
+
+	@ElementCollection
+	@CollectionTable(name = "bestelbonlijnen", joinColumns = @JoinColumn(name = "wijnid"))
+	private Set<BestelbonLijn> bestelbonlijnen;
 
 	public Wijn(byte beoordeling, int inBestelling, int jaar, BigDecimal prijs, int soortid, int versie, Wijn wijn) {
 		this.beoordeling = beoordeling;
@@ -55,7 +64,7 @@ public class Wijn implements Serializable {
 		}
 	}
 
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 
@@ -63,32 +72,16 @@ public class Wijn implements Serializable {
 		return this.beoordeling;
 	}
 
-	public void setBeoordeling(byte beoordeling) {
-		this.beoordeling = beoordeling;
-	}
-
 	public int getInBestelling() {
 		return this.inBestelling;
-	}
-
-	public void setInBestelling(int inBestelling) {
-		this.inBestelling = inBestelling;
 	}
 
 	public int getJaar() {
 		return this.jaar;
 	}
 
-	public void setJaar(int jaar) {
-		this.jaar = jaar;
-	}
-
 	public BigDecimal getPrijs() {
 		return this.prijs;
-	}
-
-	public void setPrijs(BigDecimal prijs) {
-		this.prijs = prijs;
 	}
 
 	public int getVersie() {
@@ -97,6 +90,13 @@ public class Wijn implements Serializable {
 
 	public Soort getSoort() {
 		return soort;
+	}
+
+	public static boolean isAantalValid(int aantal) {
+		if (aantal <= 0) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

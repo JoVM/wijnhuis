@@ -25,7 +25,8 @@
 		<c:forEach var='wijn' items='${soort.wijnen}' varStatus='status'>
 			<li><c:url value='/soorten/wijntoevoegen.htm' var='toevoegen'>
 					<c:param name='idwijn' value="${wijn.id}" />
-				</c:url><a href="<c:out value='${toevoegen}'/>">${wijn.jaar}</a> <c:forEach
+				</c:url><a href="<c:out value='${toevoegen}'/>">${wijn.jaar}</a> 
+				<c:forEach
 					begin='1' end='${wijn.beoordeling}'>
 					&#9733;
 				</c:forEach></li>

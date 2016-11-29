@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import be.vdab.services.LandService;
 
@@ -27,6 +28,14 @@ public class IndexServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setAttribute("image_path", "images");
 		request.setAttribute("landen", landService.findAll());
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			String mandjefoto = (String) session.getAttribute("mandjefoto");
+			if (mandjefoto != null) {
+				request.setAttribute("mandjefoto", mandjefoto);
+			}
+			session.removeAttribute("mandjefoto");
+		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
 

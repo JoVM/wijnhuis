@@ -22,7 +22,6 @@ import javax.persistence.Table;
 @Table(name = "soorten")
 public class Soort implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public static final String MET_WIJN = "Soort.metWijn";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

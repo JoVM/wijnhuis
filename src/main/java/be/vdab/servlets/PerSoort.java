@@ -36,7 +36,7 @@ public class PerSoort extends HttpServlet {
 				Soort soort = soortService.read(Long.parseLong(idSoort));
 				request.setAttribute("soort", soort);
 			} catch (NumberFormatException e) {
-				
+				System.out.println(e.getMessage());
 			}
 		}
 		request.getRequestDispatcher(VIEW).forward(request, response);

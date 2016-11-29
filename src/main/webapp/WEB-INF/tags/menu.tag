@@ -16,4 +16,9 @@
 					src="${image_path}/${land.id}.png" alt="${land.naam}"></a></li>
 		</c:forEach>
 	</ul>
+	<c:if test="${mandjefoto == 'mandjefoto'}">
+		<c:url value='/orders/mandje.htm' var='mijnmandje'></c:url>
+		<a href="<c:out value='${mijnmandje}'/>"> <img
+			src="${image_path}/mandje.png" alt="mandje"></a>
+	</c:if>
 </nav>

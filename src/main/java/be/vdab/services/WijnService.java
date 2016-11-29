@@ -9,4 +9,8 @@ public class WijnService {
 	public Wijn read(long id) {
 		return wijnRepository.read(id);
 	}
+
+	public Wijn readById(long id) {
+		return wijnRepository.readById(id);
+	}
 }

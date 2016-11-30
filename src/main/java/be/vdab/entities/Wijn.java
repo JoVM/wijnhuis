@@ -34,16 +34,16 @@ public class Wijn implements Serializable {
 	@JoinColumn(name = "soortid")
 	private Soort soort;
 
-	public Wijn(byte beoordeling, int inBestelling, int jaar, BigDecimal prijs, int soortid, int versie) {
-		this.beoordeling = beoordeling;
-		this.inBestelling = inBestelling;
-		this.jaar = jaar;
-		this.prijs = prijs;
-		this.versie = versie;
-	}
-
-	protected Wijn() {
-	}
+//	public Wijn(byte beoordeling, int inBestelling, int jaar, BigDecimal prijs, int soortid, int versie) {
+//		this.beoordeling = beoordeling;
+//		this.inBestelling = inBestelling;
+//		this.jaar = jaar;
+//		this.prijs = prijs;
+//		this.versie = versie;
+//	}
+//
+//	protected Wijn() {
+//	}
 
 	public void setSoort(Soort soort) {
 		if (this.soort != null && this.soort.getWijnen().contains(this)) {
@@ -88,6 +88,10 @@ public class Wijn implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	public void inBestelling(int aantal) {
+		inBestelling = inBestelling + aantal;
 	}
 
 	@Override

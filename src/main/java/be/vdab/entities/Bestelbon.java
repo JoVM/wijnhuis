@@ -49,13 +49,13 @@ public class Bestelbon implements Serializable {
 	@CollectionTable(name = "bestelbonlijnen", joinColumns = @JoinColumn(name = "bonid"))
 	private Set<BestelbonLijn> bestelbonlijnen;
 
-	public Bestelbon(Date besteld, Bestelwijze bestelwijze, String naam, int versie) {
-		this.besteld = besteld;
-		this.bestelwijze = bestelwijze;
+	public Bestelbon(Date besteld, Bestelwijze bestelwijze, String naam, int versie, Adres adres) {
+		setBesteld(besteld);
+		setBestelwijze(bestelwijze);
 		setNaam(naam);
 		setAdres(adres);
 		bestelbonlijnen = new HashSet<>();
-		this.versie = versie;
+		setVersie(versie);
 	}
 
 	protected Bestelbon() {

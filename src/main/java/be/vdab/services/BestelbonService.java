@@ -7,8 +7,13 @@ public class BestelbonService extends AbstractService {
 	BestelbonRepository bestelbonrepository = new BestelbonRepository();
 
 	public void create(Bestelbon bestelbon) {
-		beginTransaction();
-		bestelbonrepository.create(bestelbon);
-		commit();
+		try {
+			beginTransaction();
+			bestelbonrepository.create(bestelbon);
+			commit();
+		} catch (RuntimeException ex) {
+			rollback();
+			throw ex;
+		}
 	}
 }

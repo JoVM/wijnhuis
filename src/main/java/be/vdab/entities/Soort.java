@@ -37,13 +37,13 @@ public class Soort implements Serializable {
 	@OrderBy("jaar")
 	private Set<Wijn> wijnen;
 
-	public Soort(String naam, int versie) {
-		this.naam = naam;
-		this.versie = versie;
-	}
-
-	protected Soort() {
-	}
+//	public Soort(String naam, int versie) {
+//		this.naam = naam;
+//		this.versie = versie;
+//	}
+//
+//	protected Soort() {
+//	}
 
 	public void setLand(Land land) {
 		if (this.land != null && this.land.getSoorten().contains(this)) {

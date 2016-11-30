@@ -48,8 +48,9 @@
 			name='postcode' value='${param.postcode}' autofocus required></label>
 		<label>Gemeente<span>${fouten.gemeente}</span> <input
 			name='gemeente' value='${param.gemeente}' autofocus required></label>
+		<div><label><span>${fouten.leverwijze}</span></label></div><br>
 		<div>
-			<label><span>${fouten.leverwijze}</span><input type='radio'
+			<label><input type='radio'
 				name='leverwijze' value='afhalen'> Afhalen
 			</label> 
 			<label> <input type='radio' 

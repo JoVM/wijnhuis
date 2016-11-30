@@ -1,6 +1,8 @@
 package be.vdab.servlets;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,9 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import be.vdab.entities.Bestelbon;
 import be.vdab.entities.Wijn;
+import be.vdab.services.BestelbonService;
 import be.vdab.services.LandService;
 import be.vdab.services.WijnService;
+import be.vdab.valueobjects.Adres;
 
 /**
  * Servlet implementation class Mandje
@@ -23,8 +28,10 @@ public class Mandje extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/orders/mandje.jsp";
 	private static final String MANDJE = "mandje";
+	private static final String REDIRECT_URL = "%s/orders/bevestigen.htm";
 	private final transient LandService landService = new LandService();
 	private final transient WijnService wijnService = new WijnService();
+	private final transient BestelbonService bestelbonservice = new BestelbonService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -45,6 +52,7 @@ public class Mandje extends HttpServlet {
 				}
 				request.setAttribute("wijnenInMandje", wijnenInMandje);
 			}
+			session.removeAttribute("mandjefoto");
 		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
@@ -55,8 +63,68 @@ public class Mandje extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		int bestelwijze = 0;
+		request.setAttribute("image_path", "../images");
+		request.setAttribute("landen", landService.findAll());
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			@SuppressWarnings("unchecked")
+			Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
+			if (mandje != null) {
+				Map<Wijn, Integer> wijnenInMandje = new HashMap<>();
+				for (Map.Entry<Long, Integer> entry : mandje.entrySet()) {
+					wijnenInMandje.put(wijnService.read(entry.getKey()), entry.getValue());
+				}
+				request.setAttribute("wijnenInMandje", wijnenInMandje);
+			}
+		}
+		Map<String, String> fouten = new HashMap<>();
+		String naam = request.getParameter("naam");
+		if (!Bestelbon.isNaamValid(naam)) {
+			fouten.put("naam", "verplicht");
+		}
+		String gemeente = request.getParameter("gemeente");
+		if (!Adres.isGemeenteValid(gemeente)) {
+			fouten.put("gemeente", "verplicht");
+		}
+		String huisNr = request.getParameter("huisnummer");
+		if (!Adres.isGemeenteValid(huisNr)) {
+			fouten.put("huisnummer", "verplicht");
+		}
+		String straat = request.getParameter("straat");
+		if (!Adres.isGemeenteValid(straat)) {
+			fouten.put("straat", "verplicht");
+		}
+		String postcode = request.getParameter("postcode");
+		if (!Adres.isGemeenteValid(postcode)) {
+			fouten.put("postcode", "verplicht");
+		}
+		String leverwijze = request.getParameter("leverwijze");
+		if (leverwijze == null) {
+			fouten.put("leverwijze", "maak een keuze");
+		} else {
+			switch (leverwijze) {
+			case "afhalen":
+				bestelwijze = 0;
+				break;
+			case "opsturen":
+				bestelwijze = 1;
+				break;
+			default:
+				fouten.put("leverwijze", "maak een keuze");
+			}
+		}
+		if (!fouten.isEmpty()) {
+			request.setAttribute("fouten", fouten);
+			request.getRequestDispatcher(VIEW).forward(request, response);
+		} else {
+			Adres nieuwAdres = new Adres(gemeente, huisNr, postcode, straat);
+			Bestelbon nieuweBestelbon = new Bestelbon(new Date(Calendar.getInstance().getTimeInMillis()), bestelwijze,
+					naam, 0);
+			nieuweBestelbon.addBestelbonLijn();
+			bestelbonservice.create(nieuweBestelbon);
+			response.sendRedirect(String.format(REDIRECT_URL, request.getContextPath()));
+		}
 	}
 
 }

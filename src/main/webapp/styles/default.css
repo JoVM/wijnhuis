@@ -43,7 +43,7 @@ h1 {
 
 table, th, td {
 	border: 1px solid silver;
-	text-align: left;
+	text-align: right;
 	border-collapse: collapse;
 }
 

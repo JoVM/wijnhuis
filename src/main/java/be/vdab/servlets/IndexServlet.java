@@ -34,7 +34,6 @@ public class IndexServlet extends HttpServlet {
 			if (mandjefoto != null) {
 				request.setAttribute("mandjefoto", mandjefoto);
 			}
-			session.removeAttribute("mandjefoto");
 		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}

@@ -85,8 +85,14 @@ public class WijnToevoegen extends HttpServlet {
 				mandje = new HashMap<>();
 			}
 			try {
-				mandje.put(Long.parseLong(request.getParameter("idwijn")),
-						Integer.parseInt(request.getParameter("aantal")));
+				if (mandje.containsKey(Long.parseLong(request.getParameter("idwijn")))) {
+					int aantal = mandje.get(Long.parseLong(request.getParameter("idwijn")));
+					mandje.put(Long.parseLong(request.getParameter("idwijn")),
+							aantal + Integer.parseInt(request.getParameter("aantal")));
+				} else {
+					mandje.put(Long.parseLong(request.getParameter("idwijn")),
+							Integer.parseInt(request.getParameter("aantal")));
+				}
 			} catch (NumberFormatException e) {
 				System.out.println(e.getMessage());
 			}

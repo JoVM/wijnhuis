@@ -13,7 +13,7 @@
 	</header>
 	<h2>Wijn toevoegen aan mandje</h2>
 	<form method='post' id='toevoegform'>
-	<table>
+		<table>
 			<tr>
 				<th>Land</th>
 				<td>${wijn.soort.land.naam}</td>
@@ -28,8 +28,7 @@
 			</tr>
 			<tr>
 				<th>Beoordeling</th>
-				<td><c:forEach
-					begin='1' end='${wijn.beoordeling}'>
+				<td><c:forEach begin='1' end='${wijn.beoordeling}'>
 					&#9733;
 				</c:forEach></td>
 			</tr>
@@ -37,10 +36,15 @@
 				<th>Prijs</th>
 				<td>${wijn.prijs}</td>
 			</tr>
-		</table><br>
-		<label>Aantal flessen<span>${fouten.aantal}</span> <input
-			name='aantal' value='${param.aantal}' autofocus required></label> 
-			<input type='submit' value='Toevoegen' id='toevoegknop'>
+		</table>
+		<br> <label>Aantal flessen<span>${fouten.aantal}</span> <input
+			name='aantal' value='${param.aantal}' autofocus required></label> <input
+			type='submit' value='Toevoegen' id='toevoegknop'>
 	</form>
+	<script>
+		document.getElementById('toevoegform').onsubmit = function() {
+			document.getElementById('toevoegknop').disabled = true;
+		};
+	</script>
 </body>
 </html>

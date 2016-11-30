@@ -2,10 +2,7 @@ package be.vdab.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import be.vdab.valueobjects.BestelbonLijn;
 
 /**
  * The persistent class for the wijnen database table.
@@ -39,11 +34,7 @@ public class Wijn implements Serializable {
 	@JoinColumn(name = "soortid")
 	private Soort soort;
 
-	@ElementCollection
-	@CollectionTable(name = "bestelbonlijnen", joinColumns = @JoinColumn(name = "wijnid"))
-	private Set<BestelbonLijn> bestelbonlijnen;
-
-	public Wijn(byte beoordeling, int inBestelling, int jaar, BigDecimal prijs, int soortid, int versie, Wijn wijn) {
+	public Wijn(byte beoordeling, int inBestelling, int jaar, BigDecimal prijs, int soortid, int versie) {
 		this.beoordeling = beoordeling;
 		this.inBestelling = inBestelling;
 		this.jaar = jaar;

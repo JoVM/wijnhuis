@@ -12,6 +12,7 @@ http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/persistence_2
 		<class>be.vdab.entities.Wijn</class>
 		<class>be.vdab.entities.Bestelbon</class>
 		<class>be.vdab.valueobjects.BestelbonLijn</class>
+		<class>be.vdab.valueobjects.Adres</class>
 		<properties>
 			<property name='hibernate.show_sql' value='true' />
 			<property name='hibernate.format_sql' value='true' />

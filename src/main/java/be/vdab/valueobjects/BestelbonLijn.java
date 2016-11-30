@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+
+import be.vdab.entities.Wijn;
 
 @Embeddable
 public class BestelbonLijn implements Serializable {
@@ -11,6 +15,19 @@ public class BestelbonLijn implements Serializable {
 
 	private int aantal;
 	private BigDecimal prijs;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	private Wijn wijn;
+
+	public BestelbonLijn(int aantal, BigDecimal prijs, Wijn wijn) {
+		this.aantal = aantal;
+		this.prijs = prijs;
+		this.wijn = wijn;
+	}
+
+	protected BestelbonLijn() {
+
+	}
 
 	public int getAantal() {
 		return aantal;
@@ -24,8 +41,7 @@ public class BestelbonLijn implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + aantal;
-		result = prime * result + ((prijs == null) ? 0 : prijs.hashCode());
+		result = prime * result + ((wijn == null) ? 0 : wijn.hashCode());
 		return result;
 	}
 
@@ -38,12 +54,10 @@ public class BestelbonLijn implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		BestelbonLijn other = (BestelbonLijn) obj;
-		if (aantal != other.aantal)
-			return false;
-		if (prijs == null) {
-			if (other.prijs != null)
+		if (wijn == null) {
+			if (other.wijn != null)
 				return false;
-		} else if (!prijs.equals(other.prijs))
+		} else if (!wijn.equals(other.wijn))
 			return false;
 		return true;
 	}

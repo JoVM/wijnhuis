@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import be.vdab.entities.Bestelbon;
 import be.vdab.entities.Wijn;
+import be.vdab.enums.Bestelwijze;
 import be.vdab.services.BestelbonService;
 import be.vdab.services.LandService;
 import be.vdab.services.WijnService;
@@ -119,9 +120,15 @@ public class Mandje extends HttpServlet {
 			request.getRequestDispatcher(VIEW).forward(request, response);
 		} else {
 			Adres nieuwAdres = new Adres(gemeente, huisNr, postcode, straat);
-			Bestelbon nieuweBestelbon = new Bestelbon(new Date(Calendar.getInstance().getTimeInMillis()), bestelwijze,
-					naam, 0);
-			nieuweBestelbon.addBestelbonLijn();
+			Bestelbon nieuweBestelbon = null;
+			if (bestelwijze == 0) {
+				nieuweBestelbon = new Bestelbon(new Date(Calendar.getInstance().getTimeInMillis()), Bestelwijze.AFHALEN,
+						naam, 0);
+			} else if (bestelwijze == 1) {
+				nieuweBestelbon = new Bestelbon(new Date(Calendar.getInstance().getTimeInMillis()), Bestelwijze.LEVEREN,
+						naam, 0);
+			}
+			// nieuweBestelbon.addBestelbonLijn();
 			bestelbonservice.create(nieuweBestelbon);
 			response.sendRedirect(String.format(REDIRECT_URL, request.getContextPath()));
 		}

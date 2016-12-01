@@ -39,6 +39,14 @@ public class MandjeServlet extends HttpServlet {
 	private final transient WijnService wijnService = new WijnService();
 	private final transient BestelbonService bestelbonservice = new BestelbonService();
 
+	/**
+	 * 
+	 * ******** Also setAttribute wijnenInMandje *******
+	 * 
+	 * @param mandje
+	 * @param request
+	 * @return
+	 */
 	private Set<BestelbonLijn> getBestelbonLijnen(Map<Long, Integer> mandje, HttpServletRequest request) {
 		Set<BestelbonLijn> bestelbonlijnen = new HashSet<>();
 		if (mandje != null) {
@@ -84,7 +92,6 @@ public class MandjeServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int bestelwijze = 0;
 		Set<BestelbonLijn> bestelbonlijnen = new HashSet<>();
 		request.setAttribute("image_path", "../images");
 		request.setAttribute("landen", landService.findAll());
@@ -115,15 +122,16 @@ public class MandjeServlet extends HttpServlet {
 				fouten.put("postcode", "verplicht");
 			}
 			String leverwijze = request.getParameter("leverwijze");
+			Bestelwijze bestelwijze = Bestelwijze.AFHALEN;
 			if (leverwijze == null) {
 				fouten.put("leverwijze", "maak een keuze");
 			} else {
 				switch (leverwijze) {
 				case "afhalen":
-					bestelwijze = 0;
+					bestelwijze = Bestelwijze.AFHALEN;
 					break;
 				case "opsturen":
-					bestelwijze = 1;
+					bestelwijze = Bestelwijze.LEVEREN;
 					break;
 				default:
 					fouten.put("leverwijze", "maak een keuze");
@@ -135,13 +143,8 @@ public class MandjeServlet extends HttpServlet {
 			} else {
 				Adres nieuwAdres = new Adres(gemeente, huisNr, postcode, straat);
 				Bestelbon nieuweBestelbon = null;
-				if (bestelwijze == 0) {
-					nieuweBestelbon = new Bestelbon(new Date(Calendar.getInstance().getTimeInMillis()),
-							Bestelwijze.AFHALEN, naam, 0, nieuwAdres);
-				} else if (bestelwijze == 1) {
-					nieuweBestelbon = new Bestelbon(new Date(Calendar.getInstance().getTimeInMillis()),
-							Bestelwijze.LEVEREN, naam, 0, nieuwAdres);
-				}
+				nieuweBestelbon = new Bestelbon(new Date(Calendar.getInstance().getTimeInMillis()), bestelwijze, naam,
+						0, nieuwAdres);
 				try {
 					bestelbonservice.create(nieuweBestelbon, bestelbonlijnen);
 					session.invalidate();
@@ -156,8 +159,6 @@ public class MandjeServlet extends HttpServlet {
 					// wijn.getSoort().getLand();
 					// }
 					if (session != null) {
-//						@SuppressWarnings("unchecked")
-//						Map<Long, Integer> mandje1 = (Map<Long, Integer>) session.getAttribute(MANDJE);
 						bestelbonlijnen = getBestelbonLijnen(mandje, request);
 					}
 					request.getRequestDispatcher(VIEW).forward(request, response);

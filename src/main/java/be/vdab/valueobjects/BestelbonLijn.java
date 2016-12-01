@@ -31,6 +31,14 @@ public class BestelbonLijn implements Serializable {
 
 	}
 
+	public void setAantal(int aantal) {
+		this.aantal = aantal;
+	}
+
+	public void setPrijs(BigDecimal prijs) {
+		this.prijs = prijs;
+	}
+
 	public int getAantal() {
 		return aantal;
 	}

@@ -30,7 +30,7 @@ import be.vdab.valueobjects.BestelbonLijn;
  * Servlet implementation class Mandje
  */
 @WebServlet("/orders/mandje.htm")
-public class Mandje extends HttpServlet {
+public class MandjeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/orders/mandje.jsp";
 	private static final String MANDJE = "mandje";
@@ -38,6 +38,21 @@ public class Mandje extends HttpServlet {
 	private final transient LandService landService = new LandService();
 	private final transient WijnService wijnService = new WijnService();
 	private final transient BestelbonService bestelbonservice = new BestelbonService();
+
+	private Set<BestelbonLijn> getBestelbonLijnen(Map<Long, Integer> mandje, HttpServletRequest request) {
+		Set<BestelbonLijn> bestelbonlijnen = new HashSet<>();
+		if (mandje != null) {
+			Map<Wijn, Integer> wijnenInMandje = new HashMap<>();
+			for (Map.Entry<Long, Integer> entry : mandje.entrySet()) {
+				Wijn wijn = wijnService.read(entry.getKey()).get();
+				wijnenInMandje.put(wijn, entry.getValue());
+				bestelbonlijnen.add(new BestelbonLijn(entry.getValue(),
+						wijn.getPrijs().multiply(new BigDecimal(entry.getValue())), wijn));
+			}
+			request.setAttribute("wijnenInMandje", wijnenInMandje);
+		}
+		return bestelbonlijnen;
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -77,16 +92,7 @@ public class Mandje extends HttpServlet {
 		if (session != null) {
 			@SuppressWarnings("unchecked")
 			Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
-			if (mandje != null) {
-				Map<Wijn, Integer> wijnenInMandje = new HashMap<>();
-				for (Map.Entry<Long, Integer> entry : mandje.entrySet()) {
-					Wijn wijn = wijnService.read(entry.getKey()).get();
-					wijnenInMandje.put(wijn, entry.getValue());
-					bestelbonlijnen.add(new BestelbonLijn(entry.getValue(),
-							wijn.getPrijs().multiply(new BigDecimal(entry.getValue())), wijn));
-				}
-				request.setAttribute("wijnenInMandje", wijnenInMandje);
-			}
+			bestelbonlijnen = getBestelbonLijnen(mandje, request);
 			Map<String, String> fouten = new HashMap<>();
 			String naam = request.getParameter("naam");
 			if (!Bestelbon.isNaamValid(naam)) {
@@ -144,9 +150,18 @@ public class Mandje extends HttpServlet {
 				} catch (RecordAangepastException ex) {
 					fouten.put("error", "Een andere gebruiker heeft deze wijn gewijzigd");
 					request.setAttribute("fouten", fouten);
-					// request.removeAttribute("wijnenInMandje");
+					// Map<Wijn, Integer> testbla = ((Map<Wijn, Integer>)
+					// request.getAttribute("wijnenInMandje"));
+					// for (Wijn wijn : testbla.keySet()) {
+					// wijn.getSoort().getLand();
+					// }
+					if (session != null) {
+//						@SuppressWarnings("unchecked")
+//						Map<Long, Integer> mandje1 = (Map<Long, Integer>) session.getAttribute(MANDJE);
+						bestelbonlijnen = getBestelbonLijnen(mandje, request);
+					}
 					request.getRequestDispatcher(VIEW).forward(request, response);
-				} catch (Exception e) {
+				} catch (RuntimeException e) {
 					fouten.put("error", "DataBase Error");
 					request.setAttribute("fouten", fouten);
 					request.getRequestDispatcher(VIEW).forward(request, response);

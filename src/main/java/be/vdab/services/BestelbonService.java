@@ -29,7 +29,7 @@ public class BestelbonService extends AbstractService {
 			bestelbonrepository.create(bestelbon);
 			commit();
 		} catch (RollbackException ex) {
-			rollback();
+			rollback();			
 			if (ex.getCause() instanceof OptimisticLockException) {
 				throw new RecordAangepastException();
 			}

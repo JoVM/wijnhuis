@@ -22,7 +22,7 @@
 					value="${totaal = totaal + wijn.key.prijs * wijn.value}"
 					scope="page" />
 				<tr>
-					<td>${wijn.key.soort.land.naam} ${wijn.key.soort.naam}
+					<td>${wijn.key.soort.land.naam}${wijn.key.soort.naam}
 						${wijn.key.jaar}</td>
 					<td>${wijn.key.prijs}</td>
 					<td>${wijn.value}</td>
@@ -48,18 +48,20 @@
 			name='postcode' value='${param.postcode}' autofocus required></label>
 		<label>Gemeente<span>${fouten.gemeente}</span> <input
 			name='gemeente' value='${param.gemeente}' autofocus required></label>
-		<div><label><span>${fouten.leverwijze}</span></label></div><br>
 		<div>
-			<label><input type='radio'
-				name='leverwijze' value='afhalen'> Afhalen
-			</label> 
-			<label> <input type='radio' 
-				name='leverwijze' value='opsturen'> Opsturen
+			<label><span>${fouten.leverwijze}</span></label>
+		</div>
+		<br>
+		<div>
+			<label><input type='radio' name='leverwijze' value='afhalen'>
+				Afhalen </label> <label> <input type='radio' name='leverwijze'
+				value='opsturen'> Opsturen
 			</label>
 		</div>
 		<input type='submit' value='Als bestelbon bevestigen'
 			id='bevestigknop'>
 	</form>
+	<label><span>${fouten.error}</span></label>
 	<script>
 		document.getElementById('bestelbonbevestigen').onsubmit = function() {
 			document.getElementById('bevestigknop').disabled = true;

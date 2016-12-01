@@ -32,14 +32,6 @@ public class Land implements Serializable {
 	@OrderBy("naam")
 	private Set<Soort> soorten;
 
-	// public Land(String naam, int versie) {
-	// this.naam = naam;
-	// this.versie = versie;
-	// }
-	//
-	// protected Land() {
-	// }
-
 	public void add(Soort soort) {
 		soorten.add(soort);
 		if (soort.getLand() != this) {

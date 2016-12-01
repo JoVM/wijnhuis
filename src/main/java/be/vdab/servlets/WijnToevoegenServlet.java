@@ -19,7 +19,7 @@ import be.vdab.services.WijnService;
  * Servlet implementation class WijnToevoegen
  */
 @WebServlet("/soorten/wijntoevoegen.htm")
-public class WijnToevoegen extends HttpServlet {
+public class WijnToevoegenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/soorten/wijntoevoegen.jsp";
 	private static final String REDIRECT_URL = "%s/index.htm";

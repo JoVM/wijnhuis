@@ -22,9 +22,9 @@ public class BestelbonLijn implements Serializable {
 	private Wijn wijn;
 
 	public BestelbonLijn(int aantal, BigDecimal prijs, Wijn wijn) {
-		this.aantal = aantal;
-		this.prijs = prijs;
-		this.wijn = wijn;
+		setAantal(aantal);
+		setPrijs(prijs);
+		setWijn(wijn);
 	}
 
 	protected BestelbonLijn() {
@@ -32,13 +32,21 @@ public class BestelbonLijn implements Serializable {
 	}
 
 	public void setAantal(int aantal) {
-		if (aantal < 0) {
-
+		if (aantal <= 0) {
+			throw new IllegalArgumentException("Aantal moet groter zijn dan 0.");
 		}
+		this.aantal = aantal;
 	}
 
 	public void setPrijs(BigDecimal prijs) {
-		
+		if (prijs.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new IllegalArgumentException("Prijs moet groter zijn dan 0.");
+		}
+		this.prijs = prijs;
+	}
+
+	public void setWijn(Wijn wijn) {
+		this.wijn = wijn;
 	}
 
 	public int getAantal() {
@@ -57,6 +65,8 @@ public class BestelbonLijn implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + aantal;
+		result = prime * result + ((prijs == null) ? 0 : prijs.hashCode());
 		result = prime * result + ((wijn == null) ? 0 : wijn.hashCode());
 		return result;
 	}
@@ -70,6 +80,13 @@ public class BestelbonLijn implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		BestelbonLijn other = (BestelbonLijn) obj;
+		if (aantal != other.aantal)
+			return false;
+		if (prijs == null) {
+			if (other.prijs != null)
+				return false;
+		} else if (!prijs.equals(other.prijs))
+			return false;
 		if (wijn == null) {
 			if (other.wijn != null)
 				return false;

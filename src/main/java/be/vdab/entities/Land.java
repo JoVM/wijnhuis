@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Entity implementation class for Entity: Land
@@ -23,19 +24,21 @@ public class Land implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String naam;
-	private int versie;
+
+	@Version
+	private long versie;
 
 	@OneToMany(mappedBy = "land")
 	@OrderBy("naam")
 	private Set<Soort> soorten;
 
-//	public Land(String naam, int versie) {
-//		this.naam = naam;
-//		this.versie = versie;
-//	}
-//
-//	protected Land() {
-//	}
+	// public Land(String naam, int versie) {
+	// this.naam = naam;
+	// this.versie = versie;
+	// }
+	//
+	// protected Land() {
+	// }
 
 	public void add(Soort soort) {
 		soorten.add(soort);
@@ -63,7 +66,7 @@ public class Land implements Serializable {
 		return naam;
 	}
 
-	public int getVersie() {
+	public long getVersie() {
 		return versie;
 	}
 

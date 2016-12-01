@@ -38,8 +38,7 @@ public class WijnToevoegen extends HttpServlet {
 		String idWijn = request.getParameter("idwijn");
 		if (idWijn != null) {
 			try {
-				Wijn wijn = wijnService.read(Long.parseLong(idWijn));
-				request.setAttribute("wijn", wijn);
+				wijnService.read(Long.parseLong(idWijn)).ifPresent(wijn -> request.setAttribute("wijn", wijn));
 			} catch (NumberFormatException e) {
 
 			}
@@ -69,8 +68,7 @@ public class WijnToevoegen extends HttpServlet {
 			String idWijn = request.getParameter("idwijn");
 			if (idWijn != null) {
 				try {
-					Wijn wijn = wijnService.read(Long.parseLong(idWijn));
-					request.setAttribute("wijn", wijn);
+					wijnService.read(Long.parseLong(idWijn)).ifPresent(wijn -> request.setAttribute("wijn", wijn));
 				} catch (NumberFormatException e) {
 
 				}

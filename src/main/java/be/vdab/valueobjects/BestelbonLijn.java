@@ -39,6 +39,10 @@ public class BestelbonLijn implements Serializable {
 		return prijs;
 	}
 
+	public Wijn getWijn() {
+		return wijn;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

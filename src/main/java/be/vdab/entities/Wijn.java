@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * The persistent class for the wijnen database table.
@@ -28,22 +29,25 @@ public class Wijn implements Serializable {
 	private int inBestelling;
 	private int jaar;
 	private BigDecimal prijs;
-	private int versie;
+
+	@Version
+	private long versie;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "soortid")
 	private Soort soort;
 
-//	public Wijn(byte beoordeling, int inBestelling, int jaar, BigDecimal prijs, int soortid, int versie) {
-//		this.beoordeling = beoordeling;
-//		this.inBestelling = inBestelling;
-//		this.jaar = jaar;
-//		this.prijs = prijs;
-//		this.versie = versie;
-//	}
-//
-//	protected Wijn() {
-//	}
+	// public Wijn(byte beoordeling, int inBestelling, int jaar, BigDecimal
+	// prijs, int soortid, int versie) {
+	// this.beoordeling = beoordeling;
+	// this.inBestelling = inBestelling;
+	// this.jaar = jaar;
+	// this.prijs = prijs;
+	// this.versie = versie;
+	// }
+	//
+	// protected Wijn() {
+	// }
 
 	public void setSoort(Soort soort) {
 		if (this.soort != null && this.soort.getWijnen().contains(this)) {
@@ -75,7 +79,7 @@ public class Wijn implements Serializable {
 		return this.prijs;
 	}
 
-	public int getVersie() {
+	public long getVersie() {
 		return versie;
 	}
 

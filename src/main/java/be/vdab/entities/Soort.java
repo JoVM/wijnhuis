@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Entity implementation class for Entity: Soort
@@ -27,7 +28,9 @@ public class Soort implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String naam;
-	private int versie;
+
+	@Version
+	private long versie;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "landid")
@@ -37,13 +40,13 @@ public class Soort implements Serializable {
 	@OrderBy("jaar")
 	private Set<Wijn> wijnen;
 
-//	public Soort(String naam, int versie) {
-//		this.naam = naam;
-//		this.versie = versie;
-//	}
-//
-//	protected Soort() {
-//	}
+	// public Soort(String naam, int versie) {
+	// this.naam = naam;
+	// this.versie = versie;
+	// }
+	//
+	// protected Soort() {
+	// }
 
 	public void setLand(Land land) {
 		if (this.land != null && this.land.getSoorten().contains(this)) {
@@ -85,7 +88,7 @@ public class Soort implements Serializable {
 		return naam;
 	}
 
-	public int getVersie() {
+	public long getVersie() {
 		return versie;
 	}
 
@@ -94,7 +97,6 @@ public class Soort implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((naam == null) ? 0 : naam.hashCode());
-		result = prime * result + versie;
 		return result;
 	}
 
@@ -111,8 +113,6 @@ public class Soort implements Serializable {
 			if (other.naam != null)
 				return false;
 		} else if (!naam.equals(other.naam))
-			return false;
-		if (versie != other.versie)
 			return false;
 		return true;
 	}

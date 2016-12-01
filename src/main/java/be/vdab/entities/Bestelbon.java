@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 import be.vdab.enums.Bestelwijze;
 import be.vdab.valueobjects.Adres;
@@ -43,7 +44,9 @@ public class Bestelbon implements Serializable {
 
 	private Bestelwijze bestelwijze;
 	private String naam;
-	private int versie;
+
+	@Version
+	private long versie;
 
 	@ElementCollection
 	@CollectionTable(name = "bestelbonlijnen", joinColumns = @JoinColumn(name = "bonid"))
@@ -97,7 +100,7 @@ public class Bestelbon implements Serializable {
 		return this.naam;
 	}
 
-	public int getVersie() {
+	public long getVersie() {
 		return this.versie;
 	}
 

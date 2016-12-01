@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import be.vdab.entities.Bestelbon;
 import be.vdab.entities.Wijn;
 import be.vdab.enums.Bestelwijze;
+import be.vdab.exceptions.RecordAangepastException;
 import be.vdab.services.BestelbonService;
 import be.vdab.services.LandService;
 import be.vdab.services.WijnService;
@@ -33,7 +34,7 @@ public class Mandje extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/orders/mandje.jsp";
 	private static final String MANDJE = "mandje";
-	private static final String REDIRECT_URL = "%s/orders/bevestigen.htm";
+	private static final String REDIRECT_URL = "%s/orders/bevestigen.htm?bestelbonid=%s";
 	private final transient LandService landService = new LandService();
 	private final transient WijnService wijnService = new WijnService();
 	private final transient BestelbonService bestelbonservice = new BestelbonService();
@@ -53,7 +54,7 @@ public class Mandje extends HttpServlet {
 			if (mandje != null) {
 				Map<Wijn, Integer> wijnenInMandje = new HashMap<>();
 				for (Map.Entry<Long, Integer> entry : mandje.entrySet()) {
-					wijnenInMandje.put(wijnService.read(entry.getKey()), entry.getValue());
+					wijnenInMandje.put(wijnService.read(entry.getKey()).get(), entry.getValue());
 				}
 				request.setAttribute("wijnenInMandje", wijnenInMandje);
 			}
@@ -79,7 +80,7 @@ public class Mandje extends HttpServlet {
 			if (mandje != null) {
 				Map<Wijn, Integer> wijnenInMandje = new HashMap<>();
 				for (Map.Entry<Long, Integer> entry : mandje.entrySet()) {
-					Wijn wijn = wijnService.read(entry.getKey());
+					Wijn wijn = wijnService.read(entry.getKey()).get();
 					wijnenInMandje.put(wijn, entry.getValue());
 					bestelbonlijnen.add(new BestelbonLijn(entry.getValue(),
 							wijn.getPrijs().multiply(new BigDecimal(entry.getValue())), wijn));
@@ -135,16 +136,22 @@ public class Mandje extends HttpServlet {
 					nieuweBestelbon = new Bestelbon(new Date(Calendar.getInstance().getTimeInMillis()),
 							Bestelwijze.LEVEREN, naam, 0, nieuwAdres);
 				}
-				for (BestelbonLijn bestelbonlijn : bestelbonlijnen) {
-					nieuweBestelbon.addBestelbonLijn(bestelbonlijn);
-				}
 				try {
-					bestelbonservice.create(nieuweBestelbon);
+					bestelbonservice.create(nieuweBestelbon, bestelbonlijnen);
+					session.invalidate();
+					response.sendRedirect(
+							String.format(REDIRECT_URL, request.getContextPath(), nieuweBestelbon.getId()));
+				} catch (RecordAangepastException ex) {
+					fouten.put("error", "Een andere gebruiker heeft deze wijn gewijzigd");
+					request.setAttribute("fouten", fouten);
+					// request.removeAttribute("wijnenInMandje");
+					request.getRequestDispatcher(VIEW).forward(request, response);
 				} catch (Exception e) {
+					fouten.put("error", "DataBase Error");
 					request.setAttribute("fouten", fouten);
 					request.getRequestDispatcher(VIEW).forward(request, response);
 				}
-				response.sendRedirect(String.format(REDIRECT_URL, request.getContextPath()));
+
 			}
 		}
 	}
